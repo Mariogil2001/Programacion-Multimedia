@@ -1,0 +1,5 @@
+engine: mustache
+encoding: UTF-8
+files:
+  - path: ""
+    filtered: false
