@@ -26,7 +26,7 @@ nav div a {
   letter-spacing: 0.1em;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1280px) {
   nav {
     padding-top: 1.5em;
     padding-bottom: 1em;
@@ -37,7 +37,7 @@ nav div a {
     font-size: xx-large;
   }
   .logo {
-    position: relative !important;
+    position: revert !important;
   }
 }
 
