@@ -73,18 +73,18 @@ nav div a:active,
 }
 
 .transparent {
-  background-color: transparent !important;
+  background-color: #2a3d458e !important;
   transition: background-color 0.5s;
 }
 
-.transparent .nav-link:hover,
+/* .transparent .nav-link:hover,
 .transparent .nav-link:active
 {
   color: black !important;
 }
 .transparent .nav-link::before {
   background-color: black !important;
-}
+} */
 
 .navbar-toggler, .navbar-toggler-icon{
   background-color: white !important;
