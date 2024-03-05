@@ -6,18 +6,13 @@
     <title>Ejercicios</title>
 </head>
 <body>
-    <div class="card mb-3 carta"  >
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src="..." class="img-fluid rounded-start" alt="...">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+  <script>
+    var carta = [
+    {video:'../src/video/kettlebell.mp4', title:'Ejercicio Kettlebell',text:'Ejercicio para fortalecer la parte superiror del tronco con una Ketelebell, adaptarlo a tu peso.'},
+    {video:'https://cdn.pixabay.com/vimeo/761273567/gimnasio-135162.mp4?width=1280&hash=1148ff72904731ddba261b44676d008ad30b3231', title:'Jalon al Pecho',text:'Ejercicio para fortalecer la parte superiror de la espalda. es muy bueno para el dorsal y el trapecio superior.'},
+    ]
+    CrearCardsvideo('ejercicios',carta)
+  </script>
+  <div id="ejercicios"></div>
 </body>
 </html>
