@@ -1,3 +1,7 @@
+var _Video = "Video";
+var _Duracion = "Duracion";
+var _Progress = "progress";
+
 function CrearCardsAlimentacion(id, cartas) {
   let contenido = "";
 
@@ -54,7 +58,7 @@ function CrearCardsvideo(id, cartasvideo){
   let numero = 1;
 
   cartasvideo.forEach((element) => {
-    contenido += `
+    contenido += /*html */`
     <div class="card mb-3 carta">
         <div class="row g-0">
           <div class="col-md-12">
@@ -64,7 +68,9 @@ function CrearCardsvideo(id, cartasvideo){
           </div>
           <div class="col-md-4">
             <div class="ratio ratio-16x9">
-              <video id="Video${numero}" src="${element.video}" class="object-fit-contain " preload="auto"></video>
+              <button onclick="togglePlayPause('Video${numero}')" id="playPause${numero}" class="btn ">
+                <video id="Video${numero}" src="${element.video}" class=" video-boton" preload="auto"></video>
+              </button>
             </div>
           </div>
           <div class="col-md-8">
@@ -78,15 +84,37 @@ function CrearCardsvideo(id, cartasvideo){
                 <button onclick="document.getElementById('Video${numero}').requestFullscreen()" id="fullscreen" class="btn"><img src="../src/images/fullscreen.svg" width="24"/></button>
                 <button onclick="document.getElementById('Video${numero}').volume+=0.1" id="increaseVolume" class="btn"><img src="../src/images/plus.svg" width="36"/></button>
                 <button onclick="document.getElementById('Video${numero}').playbackRate+=0.5" id="AvanzadoRapido" class="btn"><img src="../src/images/fastforward.svg" width="24"/></button>
+                </p>
+              <p class="card-text text-center ">
+              <progress id="progress${numero}" max="10" value="0"></progress>
+              <div id="Duracion${numero}" ></div>
               </p>
             </div>
           </div>
         </div>
       </div>
+      
   `;
     numero++;
+    
   });
   document.getElementById(id).innerHTML = contenido;
+  
+  for (let i = 1; i <= cartasvideo.lenght; i++) {
+    document.getElementById(_Video+i).addEventListener('loadeddata', function() {
+      var progress = document.getElementById(`progress${i}`);
+      var video = document.getElementById(`Video${i}`);
+      progress.max = video.duration ;
+      document.getElementById(`Duracion${i}`).innerHTML = video.duration + ' segundos';
+    });
+  
+    document.getElementById(`Video${i}`).addEventListener('timeupdate', function() {
+      var progress = document.getElementById(`progress${i}`);
+      var video = document.getElementById(`Video${i}`);
+      progress.value = video.currentTime;
+      console.log(video.currentTime);
+    }); 
+  }
 }
 
 function togglePlayPause(mediaId) {
@@ -110,3 +138,4 @@ function stopVideo(videoId) {
   playPauseImg.src = "../src/images/play.svg"
   video.currentTime = 0;
 }
+

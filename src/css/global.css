@@ -61,6 +61,13 @@ form{
   border-radius: 10px;
 }
 
+.video-boton {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .carta {
     padding: 2em;
     border-radius: 20px !important;
