@@ -133,7 +133,6 @@ function CrearCardsvideo(id, cartasvideo){
       var progress = document.getElementById(`progress${i}`);
       var video = document.getElementById(`Video${i}`);
       progress.value = video.currentTime;
-      console.log(video.currentTime);
     }); 
   }
 }
@@ -153,7 +152,7 @@ function togglePlayPause(mediaId) {
 
 function stopVideo(videoId) {
   const video = document.getElementById(videoId);
-  const playPauseImg = document.getElementById('playPauseImg' + videoId.replace('Video', ''));
+  const playPauseImg = document.getElementById('playPauseImg' + videoId.replace(/Video|Cancion/, ''));
   
   video.pause();
   playPauseImg.src = "../src/images/play.svg"
