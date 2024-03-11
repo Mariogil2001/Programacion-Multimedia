@@ -29,7 +29,7 @@ function CrearCardsmusica(id, cartasmusica)
   let numero = 1;
 
   cartasmusica.forEach((element) => {
-    contenido += `
+    contenido +=/*html */ `
     <div class="card mb-3 carta">
         <div class="row g-0">
           <div class="col-md-4">
@@ -44,6 +44,10 @@ function CrearCardsmusica(id, cartasmusica)
                 <button onclick="stopVideo('Cancion${numero}')" id="stop" class="btn"><img src="../src/images/stop.svg" width="36"/></button>
                 <button onclick="document.getElementById('Cancion${numero}').volume+=0.1" id="increaseVolume" class="btn"><img src="../src/images/plus.svg" width="36"/></button>
             </div>
+            <div class="card-text text-center">
+            <progress id="progress${numero}" max="10" value="0"></progress>
+            <p id="Duracion${numero}"></p>
+            </div>
           </div>
         </div>
       </div>
@@ -51,6 +55,23 @@ function CrearCardsmusica(id, cartasmusica)
     numero++;
   });
   document.getElementById(id).innerHTML = contenido;
+  for (let i = 1; i <= cartasmusica.length; i++) {
+    document.getElementById(`Cancion${i}`).addEventListener('loadeddata', function() {
+      var progress = document.getElementById(`progress${i}`);
+      var cancion = document.getElementById(`Cancion${i}`);
+      if(isFinite(cancion.duration)){
+        progress.max = cancion.duration;
+        document.getElementById(`Duracion${i}`).innerHTML = Math.floor(cancion.duration) + ' segundos';
+      }
+    });
+  
+    document.getElementById(`Cancion${i}`).addEventListener('timeupdate', function() {
+      var progress = document.getElementById(`progress${i}`);
+      var cancion = document.getElementById(`Cancion${i}`);
+      progress.value = cancion.currentTime;
+      console.log(cancion.currentTime);
+    }); 
+  }
 }
 
 function CrearCardsvideo(id, cartasvideo){
@@ -85,10 +106,10 @@ function CrearCardsvideo(id, cartasvideo){
                 <button onclick="document.getElementById('Video${numero}').volume+=0.1" id="increaseVolume" class="btn"><img src="../src/images/plus.svg" width="36"/></button>
                 <button onclick="document.getElementById('Video${numero}').playbackRate+=0.5" id="AvanzadoRapido" class="btn"><img src="../src/images/fastforward.svg" width="24"/></button>
                 </p>
-              <p class="card-text text-center ">
-              <progress id="progress${numero}" max="10" value="0"></progress>
-              <div id="Duracion${numero}" ></div>
-              </p>
+                <div class="card-text text-center">
+                <progress id="progress${numero}" max="10" value="0"></progress>
+                <p id="Duracion${numero}"></p>
+                </div>
             </div>
           </div>
         </div>
@@ -100,12 +121,12 @@ function CrearCardsvideo(id, cartasvideo){
   });
   document.getElementById(id).innerHTML = contenido;
   
-  for (let i = 1; i <= cartasvideo.lenght; i++) {
+  for (let i = 1; i <= cartasvideo.length; i++) {
     document.getElementById(_Video+i).addEventListener('loadeddata', function() {
       var progress = document.getElementById(`progress${i}`);
       var video = document.getElementById(`Video${i}`);
-      progress.max = video.duration ;
-      document.getElementById(`Duracion${i}`).innerHTML = video.duration + ' segundos';
+      progress.max = video.duration;
+      document.getElementById(`Duracion${i}`).innerHTML = Math.floor(video.duration) + ' segundos';
     });
   
     document.getElementById(`Video${i}`).addEventListener('timeupdate', function() {

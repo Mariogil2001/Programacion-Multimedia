@@ -37,6 +37,9 @@ body {
 form{
     font-family: 'Alegreya', serif;
 }
+progress{
+  accent-color: darkorange;
+}
 .card-title, .card-text{
     font-family: 'DM Serif Text', serif;
     color: #2a3d45 !important;
