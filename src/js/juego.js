@@ -1,12 +1,15 @@
 const canvas = document.getElementById('juego');
 const ctx = canvas.getContext('2d');
 
-const BALL_RADIUS = 20;
-const DUMBBELL_RADIUS = 10;
-const NUM_DUMBBELLS = 10;
+
+let BALL_RADIUS = 30;
+let DUMBBELL_RADIUS = 20;
+let NUM_DUMBBELLS = 10;
+let SPEED = 10;
 
 const $dumbbellImage = document.getElementById('dumbbell');
 const $gymnastImage = document.getElementById('gymnast');
+const $syringeImage = document.getElementById('syringe');
 
 const DUMBELLS_STATUS = {
     ACTIVE: 1,
@@ -16,8 +19,8 @@ const DUMBELLS_STATUS = {
 let level = 1;
 let x = canvas.width / 2;
 let y = canvas.height / 2;
-let dx = 10;
-let dy = 10;
+let dx = SPEED;
+let dy = SPEED;
 
 // Ajusta el tamaño del canvas
 canvas.width = 800;
@@ -37,13 +40,27 @@ let isGamePaused = false;
 
 
 let dumbbells = [];
-let redBalls = [];
+let syringes = [];
 
 let actual_NUM_DUMBBELLS = NUM_DUMBBELLS;
 
 let isMessageShown = false;
 let messageText = '';
 
+
+document.getElementById('gameSettings').addEventListener('submit', function(event) {
+    event.preventDefault(); // Evita que el formulario se envíe, lo que recargaría la página
+    BALL_RADIUS = parseInt(document.getElementById('ballRadius').value);
+    DUMBBELL_RADIUS = parseInt(document.getElementById('dumbbellRadius').value);
+    NUM_DUMBBELLS = parseInt(document.getElementById('numDumbbells').value);
+    SPEED = parseInt(document.getElementById('speed').value);
+    dx = SPEED; // Actualiza dx
+    dy = SPEED; // Actualiza dy
+    level = 1;
+    actual_NUM_DUMBBELLS = NUM_DUMBBELLS; // Restablece el número de pesas a 10
+    restartGame();
+    isGamePaused = false; // Asegura que el juego no esté en pausa después de hacer submit
+});
 
 function drawDumbbells(){
   for(let i = 0; i < actual_NUM_DUMBBELLS; i++){ // Y también aquí
@@ -76,10 +93,10 @@ function collisionDumbbells(){
 }
 
 
-function generateRedBalls() {
-  redBalls = [];
+function generatesSyringes() {
+  syringes = [];
   for(let i = 0; i < level - 1; i++){
-      redBalls[i] = {
+      syringes[i] = {
           x: Math.random() * (canvas.width - BALL_RADIUS * 2) + BALL_RADIUS, 
           y: Math.random() * (canvas.height - BALL_RADIUS * 2) + BALL_RADIUS
       };
@@ -87,30 +104,26 @@ function generateRedBalls() {
 }
 
 
-function drawRedBalls() {
-    ctx.fillStyle = 'red';
-    for(let i = 0; i < redBalls.length; i++){
-        ctx.beginPath();
-        ctx.arc(redBalls[i].x, redBalls[i].y, BALL_RADIUS, 0, Math.PI*2);
-        ctx.fill();
-        ctx.closePath();
+function drawSyringe() {
+    for(let i = 0; i < syringes.length; i++){
+        ctx.drawImage($syringeImage, syringes[i].x, syringes[i].y, BALL_RADIUS * 2, BALL_RADIUS * 2);
     }
 }
 
-function checkRedBallCollision() {
-  for(let i = 0; i < redBalls.length; i++){
-      if(Math.sqrt((x - redBalls[i].x) ** 2 + (y - redBalls[i].y) ** 2) < BALL_RADIUS * 2){
+function checksyringeCollision() {
+  for(let i = 0; i < syringes.length; i++){
+      if(Math.sqrt((x - syringes[i].x) ** 2 + (y - syringes[i].y) ** 2) < BALL_RADIUS * 2){
           loseGame();
           break;
       }
   }
 }
 
-function drawBall(){
+function drawGymnast(){
     ctx.drawImage($gymnastImage, x - BALL_RADIUS, y - BALL_RADIUS, BALL_RADIUS * 2, BALL_RADIUS * 2);
 }
 
-function ballMovement(){
+function gymnastMovement(){
     if(rightPressed && x < canvas.width - BALL_RADIUS * 2){
         x += dx;
     } else if(leftPressed && x > BALL_RADIUS * 2){
@@ -233,7 +246,7 @@ function loseGame(){
   showMessage("Perdiste UnU");
   level = 1;
   actual_NUM_DUMBBELLS = NUM_DUMBBELLS; // Restablece el número de pesas a 10
-  redBalls = []; // Vacía el array de bolas rojas
+  syringes = []; // Vacía el array de bolas rojas
   restartGame();
 }
 
@@ -245,21 +258,21 @@ function restartGame(){
     x = canvas.width / 2; // Cambia la posición del jugador al centro del canvas
     y = canvas.height / 2; // Cambia la posición del jugador al centro del canvas
     coordenatesDumbbells();
-    generateRedBalls();
+    generatesSyringes();
     isGamePaused = true;
 }
 
 function drawElements() {
     cleanCanvas();
     drawDumbbells();
-    drawBall();
-    drawRedBalls();
+    drawGymnast();
+    drawSyringe();
     drawLevel();
 }
 
 function checkCollisions() {
     collisionDumbbells();
-    checkRedBallCollision();
+    checksyringeCollision();
 }
 
 function draw() {
@@ -268,7 +281,7 @@ function draw() {
   if(dumbbells.every(dumbbell => dumbbell.status === DUMBELLS_STATUS.INACTIVE)){
       winGame();
   }
-  ballMovement();
+  gymnastMovement();
   drawMessage();
   requestAnimationFrame(draw);
 }

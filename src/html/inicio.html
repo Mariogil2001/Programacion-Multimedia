@@ -21,11 +21,38 @@
     <img src="../src/images/inicio-1.webp" class="img-fluid image" />
     <img src="../src/images/inicio-2.webp" class="img-fluid image" />
     <div class="container">
+      <form id="gameSettings" class="text-white">
+        <div class="row justify-content-center">
+          <div class="form-group col-6 col-lg-4">
+        <label for="ballRadius" class="my-2">Tamaño del personaje: </label>
+        <input type="number" id="ballRadius" name="ballRadius" class="form-control" value="30">
+      </div>
+      <div class="form-group col-6 col-lg-4">
+        <label for="dumbbellRadius" class="my-2">Tamaño de la pesa: </label>
+        <input type="number" id="dumbbellRadius" name="dumbbellRadius" class="form-control" value="20">
+      </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="form-group col-6 col-lg-4">
+        <label for="numDumbbells" class="my-2">Número de pesas: </label>
+        <input type="number" id="numDumbbells" name="numDumbbells"  class="form-control" value="10">
+      </div>
+      <div class="form-group col-6 col-lg-4">
+        <label for="speed" class="my-2">Velocidad del personaje: </label>
+        <input type="number" id="speed" name="speed"  class="form-control" value="10">
+        </div>
+      </div>
+      <div class="row justify-content-center mt-4">
+        <input type="submit" class="btn btnfos-2 mb-3" value="submit">
+      </div>
+      </form>
       <script src="./src/js/juego.js"></script>
       <canvas id="juego"></canvas>
       <button class="btn" id="Jugar" onclick="juego.requestFullscreen()">Juega en Pantalla Completa</button>
       <img hidden id="dumbbell" src="src/images/dumbbell.svg" alt="Pesas para el juego" />
       <img hidden id="gymnast" src="src/images/gymnast.svg" alt="Personaje para el juego" />
+      <img hidden id="syringe" src="src/images/syringe.svg" alt="Game over para el juego" />
+
     </div>
     <h2 class="card-title text-center mb-4 text-white">
       ¿Tienes alguna duda? Contacta con nosotros
