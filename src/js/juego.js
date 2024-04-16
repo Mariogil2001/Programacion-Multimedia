@@ -10,6 +10,12 @@ let SPEED = 10;
 const $dumbbellImage = document.getElementById('dumbbell');
 const $gymnastImage = document.getElementById('gymnast');
 const $syringeImage = document.getElementById('syringe');
+const $metalMusic = document.getElementById('metal-dumbbell');
+const $winmusic = document.getElementById('win-game');
+const $losemusic = document.getElementById('game-over');
+
+const VolumeSlider = document.getElementById('gain-node');
+
 
 const DUMBELLS_STATUS = {
     ACTIVE: 1,
@@ -46,6 +52,12 @@ let actual_NUM_DUMBBELLS = NUM_DUMBBELLS;
 
 let isMessageShown = false;
 let messageText = '';
+
+let audioContext;
+let track;
+let pannerNode;
+let gainNode;
+let analyser;
 
 
 document.getElementById('gameSettings').addEventListener('submit', function(event) {
@@ -87,7 +99,15 @@ function collisionDumbbells(){
       const dy = y - currentDumbbell.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
       if(distance < BALL_RADIUS + DUMBBELL_RADIUS){
+        if($metalMusic.duration > 0){
+            const pannerValue = (currentDumbbell.x) / (canvas.width) * 2 - 1;
+            console.log(pannerValue);
+            pannerNode.pan.value = pannerValue;  
+            $metalMusic.currentTime = 0;
+            $metalMusic.play();
+        }
           currentDumbbell.status = DUMBELLS_STATUS.INACTIVE;
+
       }
   }
 }
@@ -142,6 +162,19 @@ function cleanCanvas() {
 function initEvents() {
     document.addEventListener('keydown', handleKeyEvent);
     document.addEventListener('keyup', handleKeyEvent);
+
+    audioContext = new AudioContext();
+    track = audioContext.createMediaElementSource($metalMusic);
+    pannerNode = audioContext.createStereoPanner();
+    gainNode = audioContext.createGain();
+
+    track.connect(pannerNode).connect(gainNode).connect(audioContext.destination);
+
+    track = audioContext.createMediaElementSource($winmusic);
+    track.connect(gainNode).connect(audioContext.destination);
+
+    track = audioContext.createMediaElementSource($losemusic);
+    track.connect(gainNode).connect(audioContext.destination);
 }
 
 function handleKeyEvent(event) {
@@ -188,6 +221,10 @@ canvas.addEventListener('click', function() {
       isGamePaused = false;
   }
 });
+
+VolumeSlider.addEventListener('input', function() {
+    gainNode.gain.value = VolumeSlider.value;
+    });
 
 function drawLevel() {
     ctx.font = '16px Verdana';
@@ -238,6 +275,7 @@ function winGame(){
   showMessage("Has ganado!!");
   level++;
   actual_NUM_DUMBBELLS = (level * NUM_DUMBBELLS)/2; // Incrementa el número de pesas en función del nivel
+  $winmusic.play();
   restartGame();
 }
 
@@ -247,6 +285,7 @@ function loseGame(){
   level = 1;
   actual_NUM_DUMBBELLS = NUM_DUMBBELLS; // Restablece el número de pesas a 10
   syringes = []; // Vacía el array de bolas rojas
+  $losemusic.play();
   restartGame();
 }
 

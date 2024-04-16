@@ -34,7 +34,7 @@ body {
     background-size: cover;
 }
 
-form{
+form, .volumen{
     font-family: 'Alegreya', serif;
 }
 progress{

@@ -46,12 +46,21 @@
         <input type="submit" class="btn btnfos-2 mb-3" value="submit">
       </div>
       </form>
+      <div class="row justify-content-center mb-3">
+        <div class="form-group col-6 col-lg-4">
+          <label class="my-2 text-white volumen">Volumen: </label>
+          <input type="range" id="gain-node"   class="form-range" min="0" max="1" value="0.5" step="0.1">
+        </div>
+      </div>
       <script src="./src/js/juego.js"></script>
       <canvas id="juego"></canvas>
       <button class="btn" id="Jugar" onclick="juego.requestFullscreen()">Juega en Pantalla Completa</button>
       <img hidden id="dumbbell" src="src/images/dumbbell.svg" alt="Pesas para el juego" />
       <img hidden id="gymnast" src="src/images/gymnast.svg" alt="Personaje para el juego" />
       <img hidden id="syringe" src="src/images/syringe.svg" alt="Game over para el juego" />
+      <audio id="metal-dumbbell" src="src/musica/Metal.mp3"></audio>
+      <audio id="game-over" src="src/musica/losegame.mp3"></audio>
+      <audio id="win-game" src="src/musica/wingame.mp3"></audio>
 
     </div>
     <h2 class="card-title text-center mb-4 text-white">
