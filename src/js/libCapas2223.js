@@ -49,6 +49,7 @@ function nuevaConexion()
 	return xmlhttp; 
 }
 
+var yacreado = false;
 function Cargar(url, capa)
 {
 	var contenido = document.getElementById(capa);
@@ -61,6 +62,13 @@ function Cargar(url, capa)
 		{
 			contenido.innerHTML = conexion.responseText;
 			invokeScript(document.getElementById(capa));
+			if(url == "./src/html/alimentacion.html" && yacreado == false){
+				var script = document.createElement('script');
+				script.src = "./src/js/animacion3D.js";
+				script.type = 'module';
+				document.head.appendChild(script);
+				yacreado = true;
+			}
 		}
 	} 
 	conexion.send(null);
