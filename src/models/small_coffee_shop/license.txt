@@ -1,0 +1,11 @@
+Model Information:
+* title:	Small Coffee Shop
+* source:	https://sketchfab.com/3d-models/small-coffee-shop-2d2f997095d646d5ad4c6595b286b70c
+* author:	Pukka Films (https://sketchfab.com/pukkafilms)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Small Coffee Shop" (https://sketchfab.com/3d-models/small-coffee-shop-2d2f997095d646d5ad4c6595b286b70c) by Pukka Films (https://sketchfab.com/pukkafilms) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
