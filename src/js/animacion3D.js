@@ -10,6 +10,7 @@ const container = document.getElementById("animacion");
 const loader = new GLTFLoader();
 const pointer = new THREE.Vector2();
 const raycaster = new THREE.Raycaster();
+const loaderTexture = new THREE.TextureLoader();
 const progressBar = new THREE.Mesh(
   new THREE.BoxGeometry(5, 0.5, 0.5),
   new THREE.MeshBasicMaterial({ color: 0x2effd7 })
@@ -79,31 +80,32 @@ function setupLights() {
 }
 
 function setupParedes(){
-  const geometrypared1 = new THREE.BoxGeometry( 56, 20, 0 );
-  const materialpared1 = new THREE.MeshBasicMaterial( {color: 0xffffff} );
-  const pared1 = new THREE.Mesh( geometrypared1, materialpared1 );
-  pared1.position.z = 24.5;
-  pared1.position.x = 1.5;
-  pared1.position.y = 4.8;
-  scene.add( pared1 );
+  loaderTexture.load('./src/images/Wood.jpg', function(texture) {
+    const materialpared = new THREE.MeshBasicMaterial({ map: texture });
 
-  const geometrypared2 = new THREE.BoxGeometry( 56, 20, 0 );
-  const materialpared2 = new THREE.MeshBasicMaterial( {color: 0xffffff} );
-  const pared2 = new THREE.Mesh( geometrypared2, materialpared2 );
-  pared2.position.z = -3.5;
-  pared2.position.x = 29.5;
-  pared2.position.y = 4.8;
-  pared2.rotation.y = Math.PI / 2;
-  scene.add( pared2 );
+    const geometrypared1 = new THREE.BoxGeometry( 56, 20, 0 );
+    const pared1 = new THREE.Mesh( geometrypared1, materialpared );
+    pared1.position.z = 24.5;
+    pared1.position.x = 1.5;
+    pared1.position.y = 4.8;
+    scene.add( pared1 );
 
-  const geometrypared3 = new THREE.BoxGeometry( 56, 20, 0 );
-  const materialpared3 = new THREE.MeshBasicMaterial( {color: 0xffffff} );
-  const pared3 = new THREE.Mesh( geometrypared3, materialpared3 );
-  pared3.position.z = -3.5;
-  pared3.position.x = -26.5;
-  pared3.position.y = 4.8;
-  pared3.rotation.y = Math.PI / 2;
-  scene.add( pared3 );
+    const geometrypared2 = new THREE.BoxGeometry( 56, 20, 0 );
+    const pared2 = new THREE.Mesh( geometrypared2, materialpared );
+    pared2.position.z = -3.5;
+    pared2.position.x = 29.5;
+    pared2.position.y = 4.8;
+    pared2.rotation.y = Math.PI / 2;
+    scene.add( pared2 );
+
+    const geometrypared3 = new THREE.BoxGeometry( 56, 20, 0 );
+    const pared3 = new THREE.Mesh( geometrypared3, materialpared );
+    pared3.position.z = -3.5;
+    pared3.position.x = -26.5;
+    pared3.position.y = 4.8;
+    pared3.rotation.y = Math.PI / 2;
+    scene.add( pared3 );
+  });
 }
 
 function addDirectionalLight() {
