@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<link
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+rel="stylesheet"
+integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+crossorigin="anonymous"
+/>
+<div id="container" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+</div>
+<link href="../css/global.css" rel="stylesheet"/>
+<div>
+<a href="../../index.html" class="fixed-top m-5 text-white grafico">Volver</a>
+</div>
+<script type="module">
+
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+d3.csv('../data/toughestsport.csv')
+    .then(data => {
+        // Parsear los niveles de resistencia
+        data.forEach(d => {
+            d.Endurance = parseFloat(d.Endurance);
+        });
+
+        // Ordenar los datos por resistencia de menor a mayor y tomar los primeros 10
+        data = data.sort((a, b) => d3.descending(a.Endurance, b.Endurance)).slice(0, 20);
+
+        // Crear una escala para el eje y
+        const yScale = d3.scaleLinear()
+            .domain([0, d3.max(data, d => d.Endurance)])
+            .range([300, 0]);
+
+        // Crear una escala para el eje x
+        const xScale = d3.scaleBand()
+            .domain(data.map(d => d.SPORT))
+            .range([0, 500])
+            .padding(0.1);
+
+        // Crear una escala de color
+        const colorScale = d3.scaleSequential()
+            .domain([d3.max(data, d => d.Endurance), 0])
+            .interpolator(d3.interpolatePlasma);
+
+        // Seleccionar el contenedor y añadir un elemento SVG
+        const svg = d3.select("#container")
+            .append("svg")
+            .attr("width", 700)
+            .attr("height", 650); // Aumentar la altura para acomodar los nombres de los deportes
+
+        // Añadir los ejes al gráfico
+        svg.append("g")
+            .attr("transform", "translate(100,410)")
+            .call(d3.axisBottom(xScale))
+            .selectAll("text")  
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("class","text-legend-2")
+            .attr("transform", "rotate(-65)");
+
+        svg.append("g")
+            .attr("transform", "translate(90,90)")
+            .call(d3.axisLeft(yScale))
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", "-2em")
+            .attr("dx", "-3em")
+            .attr("text-anchor", "center")
+            .attr("fill", "#000")
+            .attr("class","text-legend")
+            .text("Dificultad por Resistencia");
+
+        // Añadir las barras al gráfico
+        const bars = svg.selectAll("rect")
+            .data(data)
+            .enter()
+            .append("g");
+
+        bars.append("rect")
+            .attr("x", d => 100 + xScale(d.SPORT))
+            .attr("y", d => 100 + yScale(d.Endurance))
+            .attr("width", xScale.bandwidth() - 3)
+            .attr("height", d => 300 - yScale(d.Endurance))
+            .attr("fill", d => colorScale(d.Endurance - 6))
+            .on("mouseover", function(event, d) {
+                d3.select(this)
+                    .attr("width", xScale.bandwidth())
+                    .attr("y", d => 90 + yScale(d.Endurance))
+                    .attr("height", d => 310 - yScale(d.Endurance));
+                svg.append("text")
+                    .attr("x", d => 100 + xScale(d.SPORT))
+                    .attr("y", d => 90 + yScale(d.Endurance))
+                    .attr("id", "tooltip")
+                    .text(d => d.Endurance);
+            })
+            .on("mouseout", function(event, d) {
+                d3.select(this)
+                    .attr("width", xScale.bandwidth() - 3)
+                    .attr("y", d => 100 + yScale(d.Endurance))
+                    .attr("height", d => 300 - yScale(d.Endurance));
+                svg.select("#tooltip").remove();
+            });
+    })
+    .catch(error => console.error('Error:', error));
+</script>
